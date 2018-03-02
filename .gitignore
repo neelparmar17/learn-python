@@ -2,3 +2,5 @@ ENV/
 __pycache__/
 .vscode/
 .idea/
+*.csv
+automateDailyReport/*.csv
