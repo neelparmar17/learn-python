@@ -1,0 +1,71 @@
+"Implement Rent ID","Customer Name","Customer Mobile",Village,"Total Days","Implement Rate","Total Rent","Rental Type","No of Hour","Hub Name","Hub Code","State Name","District Name","Implement Name","Start Date","End Date","Referral Type","Referral Code"
+KAF010502533,"Bhuvan B ",9008319175,Madapura,0,25.00,200.00,Hour,8,Hullahalli,KAF0105,Karnataka,Mysuru,"Knapsack - Sprayer",05/02/2018,05/02/2018,0,0
+KAF150102540,"Vennkatesh ",9901208484,Muddatanuru,1,400.00,400.00,Day,8,Tekkalakote,KAF1501,Karnataka,Bellary,"Htp - Sprayer",07/02/2018,07/02/2018,0,0
+KAF150102541,"Vennkatesh ",9901208484,Muddatanuru,1,400.00,400.00,Day,8,Tekkalakote,KAF1501,Karnataka,Bellary,"Htp - Sprayer",08/02/2018,08/02/2018,0,0
+KAF170102542,"Laxman ",9902991260,Siruguppa,1,200.00,200.00,Day,8,Siruguppa,KAF1701,Karnataka,Bellary,"Knapsack - Sprayer",08/02/2018,08/02/2018,0,0
+KAF010502543,"Manju   ",9964497041,Other1-hulahalli-hob,1,31.25,250.00,Hour,8,Hullahalli,KAF0105,Karnataka,Mysuru,Trolley,09/02/2018,09/02/2018,0,0
+KAF150102544,"Vennkatesh ",9901208484,Muddatanuru,1,400.00,400.00,Day,8,Tekkalakote,KAF1501,Karnataka,Bellary,"Htp - Sprayer",09/02/2018,09/02/2018,0,0
+KAF150102545,"Vennkatesh ",9901208484,Muddatanuru,1,400.00,400.00,Day,8,Tekkalakote,KAF1501,Karnataka,Bellary,"Htp - Sprayer",10/02/2018,10/02/2018,0,0
+KAY010402546,"Naveenkumar ",9972727830,Buvanahalli,1,50.00,200.00,Hour,4,Kasaba(Holenarasipura),KAY0104,Karnataka,Hassan,"Power Weeder",10/02/2018,10/02/2018,0,0
+KAY010402547,"Naveenkumar ",9972727830,Buvanahalli,1,400.00,400.00,Day,8,Kasaba(Holenarasipura),KAY0104,Karnataka,Hassan,"Power Weeder",11/02/2018,11/02/2018,0,0
+KAF090202548,"Panduranga  H",9686847906,Patnadasheragu,1,800.00,800.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Cultivator 9 Tyne",08/02/2018,08/02/2018,0,0
+KAF090202549,"Baskar Reddy ",8050111199,Mushtagatta,1,600.00,600.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Cultivator 9 Tyne",09/02/2018,09/02/2018,0,0
+KAF090202550,"Baskar Reddy ",8050111199,Mushtagatta,1,600.00,600.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Cultivator 9 Tyne",08/02/2018,08/02/2018,0,0
+KAF090202551,"Baskar Reddy ",8050111199,Mushtagatta,1,600.00,600.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Cultivator 9 Tyne",07/02/2018,07/02/2018,0,0
+KAF090202552,"Baskar Reddy ",8050111199,Mushtagatta,1,600.00,600.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Cultivator 9 Tyne",06/02/2018,06/02/2018,0,0
+KAF090202553,"Baskar Reddy ",8050111199,Mushtagatta,1,600.00,600.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Cultivator 9 Tyne",05/02/2018,05/02/2018,0,0
+KAF120102554,"Veranagouda ",9591138601,Other-balaganur-hob,1,800.00,800.00,Day,8,Balaganur,KAF1201,Karnataka,Raichur,"Cultivator 9 Tyne",12/02/2018,12/02/2018,0,0
+KAY010402555,"Rakshith ",8970379087,Buvanahalli,1,400.00,400.00,Day,8,Kasaba(Holenarasipura),KAY0104,Karnataka,Hassan,"Power Weeder",14/02/2018,14/02/2018,0,0
+KAF150102556,"Yallappa ",7353506424,Muddatanuru,1,400.00,400.00,Day,8,Tekkalakote,KAF1501,Karnataka,Bellary,"Htp - Sprayer",14/02/2018,14/02/2018,0,0
+KAF120102557,"Ramesh ",8970557216,Hullur,1,100.00,500.00,Hour,5,Balaganur,KAF1201,Karnataka,Raichur,"Cultivator 9 Tyne",14/02/2018,14/02/2018,0,0
+KAF200102558,"Thimmegowda ",9972159824,Kabbaligere,1,250.00,250.00,Day,8,Ramanathapura,KAF2001,Karnataka,Hassan,"Knapsack - Sprayer",14/02/2018,14/02/2018,0,0
+KAF010502560,"Manju   ",9964497041,Other-hulahalli-hob,1,250.00,250.00,Hour,8,Hullahalli,KAF0105,Karnataka,Mysuru,Trolley,13/02/2018,13/02/2018,0,0
+KAF010502561,"Manju   ",9964497041,Other-hulahalli-hob,1,250.00,250.00,Hour,8,Hullahalli,KAF0105,Karnataka,Mysuru,Trolley,15/02/2018,15/02/2018,0,0
+KAF010502562,"Manju   ",9964497041,Other-hulahalli-hob,1,218.00,218.00,Hour,7,Hullahalli,KAF0105,Karnataka,Mysuru,Trolley,14/02/2018,14/02/2018,0,0
+KAF150102563,"Yallappa ",7353506424,Muddatanuru,1,400.00,400.00,Day,8,Tekkalakote,KAF1501,Karnataka,Bellary,"Htp - Sprayer",15/02/2018,15/02/2018,0,0
+KAF170102564,"B. E. Madhuvan ",7975742086,Siruguppa,1,300.00,1200.00,Hour,4,Siruguppa,KAF1701,Karnataka,Bellary,"Rotavator 5 Feet",15/02/2018,15/02/2018,0,0
+KAF170102565,"Laxman ",9902991260,Siruguppa,1,200.00,200.00,Day,8,Siruguppa,KAF1701,Karnataka,Bellary,"Knapsack - Sprayer",12/02/2018,12/02/2018,0,0
+KAF140102566,"Nagaraju N",9164899505,Shettahalli,3,200.00,600.00,Day,24,Talakadu,KAF1401,Karnataka,Mysuru,Trolley,06/02/2018,08/02/2018,0,0
+KAF010502567,"Manju   ",9964497041,Other-hulahalli-hob,1,218.00,218.00,Hour,7,Hullahalli,KAF0105,Karnataka,Mysuru,Trolley,17/02/2018,17/02/2018,0,0
+KAF010502568,"Manju   ",9964497041,Other-hulahalli-hob,1,218.00,218.00,Hour,7,Hullahalli,KAF0105,Karnataka,Mysuru,Trolley,19/02/2018,19/02/2018,0,0
+KAF150102569,"Vennkatesh ",9901208484,Muddatanuru,1,400.00,400.00,Day,8,Tekkalakote,KAF1501,Karnataka,Bellary,"Htp - Sprayer",19/02/2018,19/02/2018,0,0
+KAY010402570,"Madhu ",9731165012,Billenahalli,1,50.00,200.00,Hour,4,Kasaba(Holenarasipura),KAY0104,Karnataka,Hassan,"Power Weeder",20/02/2018,20/02/2018,0,0
+KAF090202571,"Baskar Reddy ",8050111199,Mushtagatta,1,75.00,600.00,Hour,8,Kurugodu,KAF0902,Karnataka,Bellary,"Cultivator 9 Tyne",11/02/2018,11/02/2018,0,0
+KAF090202572,"Baskar Reddy ",8050111199,Mushtagatta,1,600.00,600.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Cultivator 9 Tyne",12/02/2018,12/02/2018,0,0
+KAF090202573,"Baskar Reddy ",8050111199,Mushtagatta,1,600.00,600.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Cultivator 9 Tyne",10/02/2018,10/02/2018,0,0
+KAF090202574,"Baskar Reddy ",8050111199,Mushtagatta,1,600.00,600.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Cultivator 9 Tyne",13/02/2018,13/02/2018,0,0
+KAF170102575,"B. E. Madhuvan ",7975742086,Siruguppa,1,200.00,200.00,Day,8,Siruguppa,KAF1701,Karnataka,Bellary,"Knapsack - Sprayer",21/02/2018,21/02/2018,0,0
+KAF160102576,"N Basavaraj ",9535464747,Sirivara,1,300.00,1800.00,Hour,6,Moka,KAF1601,Karnataka,Bellary,"Rotavator 5 Feet",06/02/2018,06/02/2018,0,0
+KAF010502577,"Manju   ",9964497041,Other-hulahalli-hob,1,218.00,218.00,Hour,7,Hullahalli,KAF0105,Karnataka,Mysuru,Trolley,20/02/2018,20/02/2018,0,0
+KAF010502578,"Manju   ",9964497041,Other-hulahalli-hob,1,218.00,218.00,Hour,7,Hullahalli,KAF0105,Karnataka,Mysuru,Trolley,21/02/2018,21/02/2018,0,0
+KAF120102579,"Ambaresh  ",7892756459,Hullur,1,500.00,500.00,Hour,5,Balaganur,KAF1201,Karnataka,Raichur,"Cultivator 9 Tyne",23/02/2018,23/02/2018,0,0
+KAF150102580,"Veera ",9902229568,Muddatanuru,1,400.00,400.00,Day,8,Tekkalakote,KAF1501,Karnataka,Bellary,"Htp - Sprayer",23/02/2018,23/02/2018,0,0
+KAF290102581,"Somshekar ",8970463655,Madeehalli,1,400.00,400.00,Day,8,Madeehalli,KAF2901,Karnataka,Hassan,"Power Weeder",23/02/2018,23/02/2018,0,0
+KAF290102582,"Hemanna ",8147815308,Madeehalli,1,400.00,400.00,Day,8,Madeehalli,KAF2901,Karnataka,Hassan,"Power Weeder",23/02/2018,23/02/2018,0,0
+KAF240502583,"Haranahalli Hub ",9686834562,Other-elwala-hob,5,400.00,2000.00,Day,40,Elwala,KAF2405,Karnataka,Mysuru,"Power Reaper(tractor Operated)",24/02/2018,28/02/2018,0,0
+KAF170102584,"Kallanagouda ",7829231036,Siruguppa,1,200.00,200.00,Day,8,Siruguppa,KAF1701,Karnataka,Bellary,"Knapsack - Sprayer",23/02/2018,23/02/2018,0,0
+KAF010502585,"Manju   ",9964497041,Other-hulahalli-hob,1,218.00,218.00,Hour,7,Hullahalli,KAF0105,Karnataka,Mysuru,Trolley,24/02/2018,24/02/2018,0,0
+KAF170102586,"Kallanagouda ",7829231036,Siruguppa,1,200.00,200.00,Day,8,Siruguppa,KAF1701,Karnataka,Bellary,"Knapsack - Sprayer",24/02/2018,24/02/2018,0,0
+KAF010202587,"Prakash  S",7353643521,Pura,1,50.00,550.00,Hour,11,Hampapura,KAF0102,Karnataka,Mysuru,"Single Mb Plough",27/02/2018,27/02/2018,0,0
+KAF010202588,"Sathish C",8296875334,Other-hampapura-hob,1,50.00,300.00,Hour,6,Hampapura,KAF0102,Karnataka,Mysuru,"Single Mb Plough",26/02/2018,26/02/2018,0,0
+KAF170102589,"Dyavanna  ",8123940012,Karchiganuru,1,200.00,200.00,Day,8,Siruguppa,KAF1701,Karnataka,Bellary,"Knapsack - Sprayer",26/02/2018,26/02/2018,0,0
+KAF150102590,"Hulyappa ",8861119172,Havinahal,1,400.00,400.00,Day,8,Tekkalakote,KAF1501,Karnataka,Bellary,"Htp - Sprayer",24/02/2018,24/02/2018,0,0
+KAF010502591,"Bhuvan B ",9008319175,Madapura,1,25.00,200.00,Hour,8,Hullahalli,KAF0105,Karnataka,Mysuru,"Knapsack - Sprayer",26/02/2018,26/02/2018,0,0
+KAF200102592,"Dhanjay ",9980407515,Kattepura,1,400.00,400.00,Day,8,Ramanathapura,KAF2001,Karnataka,Hassan,"Power Weeder",27/02/2018,27/02/2018,0,0
+KAF090202593,"Rajesh ",9482100485,Lakshmeepura,1,150.00,150.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Knapsack - Sprayer",21/02/2018,21/02/2018,0,0
+KAF090202594,"Rajesh ",9482100485,Lakshmeepura,1,150.00,150.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Knapsack - Sprayer",23/02/2018,23/02/2018,0,0
+KAF090202595,"Rajesh ",9482100485,Lakshmeepura,1,150.00,150.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Knapsack - Sprayer",24/02/2018,24/02/2018,0,0
+KAF090202596,"Rajesh ",9482100485,Lakshmeepura,1,150.00,150.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Knapsack - Sprayer",26/02/2018,26/02/2018,0,0
+KAF240202597,"Ravijith ",8970216609,Haranahalli,12,200.00,2400.00,Day,96,Haranahalli,KAF2402,Karnataka,Mysuru,"Knapsack - Sprayer",01/02/2018,12/02/2018,0,0
+KAF240402598,"Ashok Kumar ",9945099193,Rathnapuri,3,250.00,750.00,Day,24,Kasaba(Hunsur),KAF2404,Karnataka,Mysuru,"Knapsack - Sprayer",10/02/2018,12/02/2018,0,0
+KAF280102601,"Mahesh ",9591984841,"Hebbal Kaval",1,250.00,250.00,Day,8,Hebbal,KAF2801,Karnataka,Mysuru,"Power Weeder",25/02/2018,25/02/2018,0,0
+KAF280102602,"Mahesh ",9591984841,"Hebbal Kaval",1,250.00,250.00,Day,8,Hebbal,KAF2801,Karnataka,Mysuru,"Power Weeder",26/02/2018,26/02/2018,0,0
+KAF160102611,"Huligappa ",9902490187,Moka,1,200.00,200.00,Day,8,Moka,KAF1601,Karnataka,Bellary,"Knapsack - Sprayer",19/02/2018,19/02/2018,0,0
+KAF160102612,"Huligappa ",9902490187,Moka,1,200.00,200.00,Day,8,Moka,KAF1601,Karnataka,Bellary,"Knapsack - Sprayer",20/02/2018,20/02/2018,0,0
+KAF160102613,"Nagaraju ",7026970429,Vanenuru,1,200.00,200.00,Day,8,Moka,KAF1601,Karnataka,Bellary,"Knapsack - Sprayer",21/02/2018,21/02/2018,0,0
+KAF160102614,"Nagaraju ",7026970429,Vanenuru,1,200.00,200.00,Day,8,Moka,KAF1601,Karnataka,Bellary,"Knapsack - Sprayer",22/02/2018,22/02/2018,0,0
+KAF160102615,"Bhimalingappa ",9731893059,Moka,1,200.00,200.00,Day,8,Moka,KAF1601,Karnataka,Bellary,"Knapsack - Sprayer",22/02/2018,22/02/2018,0,0
+KAF160102616,"Mallikarjuna ",9900155524,Vanenuru,1,200.00,200.00,Day,8,Moka,KAF1601,Karnataka,Bellary,"Knapsack - Sprayer",22/02/2018,22/02/2018,0,0
+KAF160102617,"Rangayya ",9880991127,Moka,1,200.00,200.00,Day,8,Moka,KAF1601,Karnataka,Bellary,"Knapsack - Sprayer",25/02/2018,25/02/2018,0,0
+KAF160102618,"Rangayya ",9880991127,Moka,1,200.00,200.00,Day,8,Moka,KAF1601,Karnataka,Bellary,"Knapsack - Sprayer",26/02/2018,26/02/2018,0,0
+KAF090202620,"Rajesh ",9482100485,Lakshmeepura,1,150.00,150.00,Day,8,Kurugodu,KAF0902,Karnataka,Bellary,"Knapsack - Sprayer",27/02/2018,27/02/2018,0,0
