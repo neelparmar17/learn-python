@@ -3,4 +3,7 @@ __pycache__/
 .vscode/
 .idea/
 *.csv
+*.xlsx
 automateDailyReport/*.csv
+automateDailyReport/*.xlsx
+automateDailyReport/*.ods
