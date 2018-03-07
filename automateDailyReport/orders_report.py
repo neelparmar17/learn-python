@@ -26,6 +26,11 @@ def transform_data(file_name, yesterday):
             order_reports[row["State"]]["Total"]["C2C"] = order_reports.get(row["State"]).get("Total").get("C2C") or 0
             order_reports[row["State"]]["Total"]["Franchisee"] = order_reports.get(row["State"]).get("Total").get("Franchisee") or 0
 
+            order_reports[row["State"]]["C2Cs on New Platform"] = order_reports.get(row["State"]).get("C2Cs on New Platform") or {}
+            order_reports[row["State"]]["C2Cs on New Platform"]["C2C"] = order_reports.get(row["State"]).get("C2Cs on New Platform").get("C2C") or 0
+            order_reports[row["State"]]["C2Cs on New Platform"]["Franchisee"] = order_reports.get(row["State"]).get("C2Cs on New Platform").get("Franchisee") or 0
+            order_reports[row["State"]]["C2Cs on New Platform"]["orders"] = order_reports.get(row["State"]).get("C2Cs on New Platform").get("orders") or 0
+
             order_reports[row["State"]][row["Hub"]] = order_reports.get(row["State"]).get(row["Hub"]) or {}
             order_reports[row["State"]][row["Hub"]]["Franchisee"] = order_reports.get(row["State"]).get(row["Hub"]).get("Franchisee") or 0
             order_reports[row["State"]][row["Hub"]]["C2C"] = order_reports.get(row["State"]).get(row["Hub"]).get("C2C") or 0
@@ -177,7 +182,6 @@ def aggregate_data(orders, implements, customers):
         if state != "Total":
             for hub in orders[state]:
                 if hub != "Total":
-                    print(hub)
                     daily_report[state][hub] = daily_report.get(state).get(hub) or {}
                     daily_report[state][hub]["Tractor+Harvestor"] = daily_report.get(state).get(hub).get("Tractor+Harvestor") or {}
                     daily_report[state][hub]["Implements only"] = daily_report.get(state).get(hub).get("Implements only") or {"Completed Hrs": 0, "Count": 0}
@@ -332,11 +336,11 @@ def generate_html(daily_report, yesterday):
         <td>%(customer count)s</td>
         </tr>
         """ % {"date": yesterday.strftime("%d/%m/%Y"),
-               "orders hours": daily_report["Total"]["Order Hours"],
-               "orders count": daily_report["Total"]["Order Count"],
-               "implements hours": daily_report["Total"]["Implement Hours"],
-               "implements count": daily_report["Total"]["Implement Orders"],
-               "customer count": daily_report["Total"]["Customer Count"],
+               "orders hours": round(daily_report["Total"]["Order Hours"], 0),
+               "orders count": round(daily_report["Total"]["Order Count"], 0),
+               "implements hours": round(daily_report["Total"]["Implement Hours"], 0),
+               "implements count": round(daily_report["Total"]["Implement Orders"], 0),
+               "customer count": round(daily_report["Total"]["Customer Count"], 0),
               }
 
     for state in daily_report:
@@ -356,11 +360,11 @@ def generate_html(daily_report, yesterday):
                     </tr>
             """ % {"rowspan": rowspan,
                 "state": state,
-                "orders hours": daily_report.get(state).get("Total").get("Tractor+Harvestor").get("Completed Hrs"),
-                "orders count": daily_report.get(state).get("Total").get("Tractor+Harvestor").get("Count"),
-                "implement hours": daily_report.get(state).get("Total").get("Implements only").get("Completed Hrs"),
-                "implement count": daily_report.get(state).get("Total").get("Implements only").get("Count"),
-                "customer count": daily_report.get(state).get("Total").get("Registered Farmers").get("Count"),
+                "orders hours": round(daily_report.get(state).get("Total").get("Tractor+Harvestor").get("Completed Hrs"), 0),
+                "orders count": round(daily_report.get(state).get("Total").get("Tractor+Harvestor").get("Count"), 0),
+                "implement hours": round(daily_report.get(state).get("Total").get("Implements only").get("Completed Hrs"), 0),
+                "implement count": round(daily_report.get(state).get("Total").get("Implements only").get("Count"), 0),
+                "customer count": round(daily_report.get(state).get("Total").get("Registered Farmers").get("Count"), 0),
                 }
 
             for hub in daily_report[state]:
@@ -458,9 +462,9 @@ def generate_daily_report_html(aggregate_c2c_franchisee, email_html, yesterday, 
             </tr>
             """  % {"rowspan": rowspan,
                     "state": state,
-                    "yesterday_c2c": aggregate_c2c_franchisee.get(state).get("Total").get("C2C"),
-                    "yesterday_franchisee": aggregate_c2c_franchisee.get(state).get("Total").get("Franchisee"),
-                    "yesterday_total": aggregate_c2c_franchisee.get(state).get("Total").get("Total"),
+                    "yesterday_c2c": round(aggregate_c2c_franchisee.get(state).get("Total").get("C2C"),0),
+                    "yesterday_franchisee": round(aggregate_c2c_franchisee.get(state).get("Total").get("Franchisee"), 0),
+                    "yesterday_total": round(aggregate_c2c_franchisee.get(state).get("Total").get("Total"), 0),
                     "mtd_c2c": round(orders.get(state).get("Total").get("C2C") or 0, 0),
                     "mtd_franchisee": round(orders.get(state).get("Total").get("Franchisee") or 0, 0),
                     "mtd_total": round(orders.get(state).get("Total").get("Hours") or 0, 0),
@@ -497,6 +501,25 @@ def generate_daily_report_html(aggregate_c2c_franchisee, email_html, yesterday, 
 
 def transform_orders(orders_old_pf, fname):
     orders = {}
+    sheet = pe.get_sheet(file_name=fname)
+    first_row = sheet.row_at(0)
+    state_index = first_row.index("Suplier State")
+    hub_index = first_row.index("Hub")
+    order_date_index = first_row.index("Order Date")
+    status_index = first_row.index("Status")
+    driver_type_index = first_row.index("Driver Type")
+    time_index = first_row.index("Minutes")
+    sheet.name_columns_by_row(0)
+    orders_count = 0
+    hours_count = 0
+    c2c_hours = 0
+    franchisee_hours = 0
+
+    today = date.today()
+    yesterday = date.today() - timedelta(1)
+    yesterday_date = int(yesterday.strftime("%d"))
+    dates = []
+
     for state in orders_old_pf:
         orders[state] = orders.get(state) or {}
         if state != "Total":
@@ -521,21 +544,6 @@ def transform_orders(orders_old_pf, fname):
             orders["Total"]["Hours"] = orders_old_pf.get("Total").get("Hours")
             orders["Total"]["Orders"] = orders_old_pf.get("Total").get("Orders")
 
-    sheet = pe.get_sheet(file_name=fname)
-    first_row = sheet.row_at(0)
-    state_index = first_row.index("Suplier State")
-    hub_index = first_row.index("Hub")
-    order_date_index = first_row.index("Order Date")
-    status_index = first_row.index("Status")
-    driver_type_index = first_row.index("Driver Type")
-    time_index = first_row.index("Minutes")
-    sheet.name_columns_by_row(0)
-    orders_count = 0
-    hours_count = 0
-    today = date.today()
-    yesterday = date.today() - timedelta(1)
-    yesterday_date = int(yesterday.strftime("%d"))
-    dates = []
     for i in range(1, yesterday_date+1):
         dates.append((date.today() - timedelta(i)).strftime("%d/%m/%Y"))
     for row in sheet:
@@ -555,22 +563,30 @@ def transform_orders(orders_old_pf, fname):
             orders[state]["Total"]["Orders"] = orders.get(state).get("Total").get("Orders") or 0
             orders[state]["Total"]["Hours"] = orders.get(state).get("Total").get("Hours") + round(row[time_index]/60, 2)
             orders[state]["Total"]["Orders"] = orders.get(state).get("Total").get("Orders") + 1
+            orders[state]["Total"]["Franchisee"] = orders.get(state).get("Total").get("Franchisee") or 0
+            orders[state]["Total"]["C2C"] = orders.get(state).get("Total").get("C2C") or 0
+           
+            orders[state]["C2Cs on New Platform"] = orders.get(state).get("C2Cs on New Platform") or {}
+            orders[state]["C2Cs on New Platform"]["Franchisee"] = orders.get(state).get("C2Cs on New Platform").get("Franchisee") or 0
+            orders[state]["C2Cs on New Platform"]["C2C"] = orders.get(state).get("C2Cs on New Platform").get("C2C") or 0
+            orders[state]["C2Cs on New Platform"]["orders"] = orders.get(state).get("C2Cs on New Platform").get("orders") or 0
             
             if row[hub_index] == "":
-                orders[state]["new C2C orders"] = orders.get(state).get("new C2C orders") or {}
-                orders[state]["new C2C orders"]["Franchisee"] = orders.get(state).get("new C2C orders").get("Franchisee") or 0
-                orders[state]["new C2C orders"]["C2C"] = orders.get(state).get("new C2C orders").get("C2C") or 0
-                orders[state]["new C2C orders"]["C2C"] = orders.get(state).get("new C2C orders").get("C2C") + round(row[time_index]/60, 2)
-                orders[state]["new C2C orders"]["orders"] = orders.get(state).get("new C2C orders").get("orders") or 0
-                orders[state]["new C2C orders"]["orders"] = orders.get(state).get("new C2C orders").get("orders") + 1
+                c2c_hours += round(row[time_index]/60, 2)
+                orders[state]["C2Cs on New Platform"]["C2C"] = orders.get(state).get("C2Cs on New Platform").get("C2C") + round(row[time_index]/60, 2)
+                orders[state]["C2Cs on New Platform"]["orders"] = orders.get(state).get("C2Cs on New Platform").get("orders") + 1
+                orders[state]["Total"]["C2C"] = orders.get(state).get("Total").get("C2C") + round(row[time_index]/60, 2)
             else:
                 orders[state][row[hub_index]] = orders.get(state).get(row[hub_index]) or {}
                 orders[state][row[hub_index]]["C2C"] = orders.get(state).get(row[hub_index]).get("C2C") or 0
                 orders[state][row[hub_index]]["Franchisee"] = orders.get(state).get(row[hub_index]).get("Franchisee") or 0
             
                 if row[driver_type_index] == "HUB":
+                    franchisee_hours += round(row[time_index]/60, 2)
                     orders[state][row[hub_index]]["Franchisee"] = orders.get(state).get(row[hub_index]).get("Franchisee") + round(row[time_index]/60, 2)
+                    orders[state]["Total"]["Franchisee"] = orders.get(state).get("Total").get("Franchisee") + round(row[time_index]/60, 2)
                 elif row[driver_type_index] == "C2C":
+                    c2c_hours += round(row[time_index]/60, 2)
                     orders[state][row[hub_index]]["C2C"] = orders.get(state).get(row[hub_index]).get("C2C") + round(row[time_index]/60, 2)
             
                 orders[state][row[hub_index]]["orders"] = orders.get(state).get(row[hub_index]).get("orders") or 0
@@ -582,6 +598,8 @@ def transform_orders(orders_old_pf, fname):
     orders["Total"]["Hours"] = round(orders.get("Total").get("Hours") + hours_count, 2)
     orders["Total"]["Orders"] = orders.get("Total").get("Orders") or 0
     orders["Total"]["Orders"] = orders.get("Total").get("Orders") + orders_count
+    orders["Total"]["C2C"] = round(c2c_hours, 2)
+    orders["Total"]["Francisee"] = round(franchisee_hours, 2)
     
     print("new pf orders  =" + format(orders_count))
     print("new pf hours = " + format(hours_count))
@@ -596,12 +614,12 @@ def generate_daily_report():
     implements = transform_data_implement("implement_rented_report_temp.csv", yesterday)
     customers = transform_data_customer("customer_report_temp.csv", yesterday)
     c2c_franchinsee = transform_data_c2c_franchisee("orders_report_temp.csv", yesterday)
-   
     final_orders = transform_orders(orders, "orders.xlsx")
+   
     aggregate_c2c_franchisee = aggregate_data_c2c_franchisee(c2c_franchinsee, final_orders)
+    aggregate_daily_report = aggregate_data(final_orders, implements, customers)
 
-    daily_report = aggregate_data(final_orders, implements, customers)
-    email_html = generate_html(daily_report, yesterday)
+    email_html = generate_html(aggregate_daily_report, yesterday)
     report_html = generate_daily_report_html(aggregate_c2c_franchisee, email_html, yesterday, final_orders)
     with open("report.html", 'w') as html:
         html.write(email_html)

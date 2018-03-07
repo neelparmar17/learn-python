@@ -1,1 +1,1 @@
-{"Total": {"Hours": 48.0, "Orders": 2}, "Karnataka": {"Total": {"Hours": 48.0, "Orders": 2}, "Elwala": {"Completed Hrs": 40.0, "Count": 1}, "Siruguppa": {"Completed Hrs": 8.0, "Count": 1}}}
+{"Karnataka": {"Elwala": {"Completed Hrs": 40.0, "Count": 1}, "Siruguppa": {"Completed Hrs": 8.0, "Count": 1}, "Total": {"Orders": 2, "Hours": 48.0}}, "Total": {"Orders": 2, "Hours": 48.0}}
