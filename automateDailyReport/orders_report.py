@@ -83,12 +83,12 @@ def transform_data_c2c_franchisee(old_file_name, new_report, yesterday):
     c2c_hours = 0
     Franchisee_hours = 0
     total = 0
-    day_before_yesterday = date.today() - timedelta(2)
+    day_before_yesterday = (date.today() - timedelta(2)).strftime("%d/%m/%Y")
     order_reports = {}
-    print("day before yesterday  " + format(day_before_yesterday.strftime("%d/%m/%Y")))
+    print("day before yesterday  " + format(day_before_yesterday))
 
     for row in input_file:
-        if row["Status"] == "Completed" and row["Order Date"] == day_before_yesterday.strftime("%d/%m/%Y"):
+        if row["Status"] == "Completed" and row["Order Date"] == day_before_yesterday:
             order_reports[row["State"]] = order_reports.get(row["State"]) or {}
             order_reports[row["State"]][row["Hub"]] = order_reports.get(row["State"]).get(row["Hub"]) or {}
             order_reports[row["State"]][row["Hub"]]["Franchisee"] = order_reports.get(row["State"]).get(row["Hub"]).get("Franchisee") or 0
@@ -118,15 +118,19 @@ def transform_data_c2c_franchisee(old_file_name, new_report, yesterday):
             order_reports[row["State"]]["Total"]["Total"] = (order_reports.get(row["State"]).get("Total").get("C2C") 
                 + order_reports.get(row["State"]).get("Total").get("Franchisee"))
 
+    print("old pf franchisee = " + format(Franchisee_hours))
+    print("old pf total = " + format(total))
+    new_franchisee = 0
+    new_pf_total = 0
     for row in sheet:
-        if (row[order_date_index] == day_before_yesterday.strftime("%d/%m/%Y")) and (row[status_index] == "Payment Completed" or row[status_index] == "Order Completed" or row[status_index] == "Partially Paid" or row[status_index] == "Work Completed"
-         or row[state_index] == "Closed" or row[status_index] == "Feedback" or row[state_index] == "Work Started") and (row[time_index] > 9 and row[time_index]< 1200):
+        if (row[order_date_index] == day_before_yesterday and (row[status_index] == "Payment Completed" or row[status_index] == "Order Completed" or row[status_index] == "Partially Paid" or row[status_index] == "Work Completed"
+         or row[status_index] == "Closed" or row[status_index] == "Feedback" or row[status_index] == "Work Started") and (row[time_index] != "" and (int(row[time_index]) > 9 and int(row[time_index])< 1200))):
             
             if row[hub_index] == "Dahegam" and row[state_index] == "india":
                 state = row[first_row.index("Suplier District")].title()
             else:
                 state = row[state_index].title() 
-            
+            new_pf_total += round(row[time_index]/60, 2)
             total += round(row[time_index]/60, 2)
             order_reports[state] = order_reports.get(state) or {}
             order_reports[state]["Total"] = order_reports.get(state).get("Total") or {}
@@ -134,7 +138,7 @@ def transform_data_c2c_franchisee(old_file_name, new_report, yesterday):
             order_reports[state]["Total"]["C2C"] = order_reports.get(state).get("Total").get("C2C") or 0
             order_reports[state]["Total"]["Total"] = order_reports.get(state).get("Total").get("Total") or 0
 
-            if row[hub_index] == "":
+            if not row[hub_index]:
                 c2c_hours += round(row[time_index]/60, 2)
                 order_reports[state]["C2Cs on New Platform"] = order_reports.get(state).get("C2Cs on New Platform") or {}
                 order_reports[state]["C2Cs on New Platform"]["C2C"] = order_reports.get(state).get("C2Cs on New Platform").get("C2C") or 0
@@ -149,6 +153,7 @@ def transform_data_c2c_franchisee(old_file_name, new_report, yesterday):
                 order_reports[state][row[hub_index]]["Franchisee"] = order_reports.get(state).get(row[hub_index]).get("Franchisee") or 0
                 order_reports[state][row[hub_index]]["Total"] = order_reports.get(state).get(row[hub_index]).get("Total") or 0
 
+                new_franchisee += row[time_index]
                 if row[driver_type_index] == "HUB":
                     Franchisee_hours += round(row[time_index]/60, 2)
                     order_reports[state][row[hub_index]]["Franchisee"] = order_reports.get(state).get(row[hub_index]).get("Franchisee") + round(row[time_index]/60, 2)
@@ -163,7 +168,12 @@ def transform_data_c2c_franchisee(old_file_name, new_report, yesterday):
             order_reports[state]["Total"]["Total"] = (order_reports.get(state).get("Total").get("Franchisee")
                 + order_reports.get(state).get("Total").get("C2C")
                 + order_reports.get(state).get("C2Cs on New Platform").get("Total")) 
-
+    
+    print("new pf franchisee = " + format(new_franchisee))
+    print("NEW PF TOTAL = " + format(new_pf_total))
+    print("total c2c" + format(c2c_hours))
+    print("total franchisee" + format(Franchisee_hours))
+    print("total of total" + format(total))
 
     order_reports["Total"] = order_reports.get("Total") or {}
     order_reports["Total"]["C2C"] = order_reports.get("Total").get("C2C") or 0
@@ -175,7 +185,7 @@ def transform_data_c2c_franchisee(old_file_name, new_report, yesterday):
     with open("c2c_franchinsee.json", 'w') as f:
         json.dump(order_reports, f)
     
-    print(order_reports)
+    # print(order_reports)
     return order_reports
 
 def transform_data_implement(input_file, yesterday):
@@ -461,7 +471,6 @@ def generate_html(daily_report, yesterday):
 
             for hub in daily_report[state]:
                 if hub != "Total" and hub != "C2Cs on New Platform":
-                    # color = (daily_report[state][hub]["Tractor+Harvestor"]["Completed Hrs"] != 0 ? "#94b1fd" : "#fff")
                     email_html += """
                         <tr>
                             <td bgcolor= "%(color)s">
@@ -485,7 +494,7 @@ def generate_html(daily_report, yesterday):
 
                         </tr>
                     """ % { "hub": hub,
-                            "color": "#fb9393" if (daily_report[state][hub]["Tractor+Harvestor"]["Completed Hrs"] == 0 and daily_report[state][hub]["Implements only"]["Completed Hrs"] == 0 and daily_report[state][hub]["Tractor+Harvestor"]["Count"] == 0 and daily_report[state][hub]["Implements only"]["Count"] == 0) else "#fff",
+                            "color": "#fb9393" if (daily_report[state][hub]["Tractor+Harvestor"]["Completed Hrs"] == 0 and daily_report[state][hub]["Implements only"]["Completed Hrs"] == 0 and daily_report[state][hub]["Tractor+Harvestor"]["Count"] == 0 and daily_report[state][hub]["Implements only"]["Count"] == 0) else "#ffffff",
                             "tractor_hours": round(daily_report[state][hub]["Tractor+Harvestor"]["Completed Hrs"], 0),
                             "tractor_orders": round(daily_report[state][hub]["Tractor+Harvestor"]["Count"], 0),
                             "implement_hours": round(daily_report[state][hub]["Implements only"]["Completed Hrs"], 0),
@@ -503,7 +512,7 @@ def generate_html(daily_report, yesterday):
                     <td>%(farmer_count)s</td>
                 </tr>
             """  % { "c2c_new": "C2Cs on New Platform",
-                     "color": "#94b1fd",
+                     "color": "#9bc4ff",
                      "tractor_hours": round(daily_report.get(state).get("C2Cs on New Platform").get("Tractor+Harvestor").get("Completed Hrs"), 0),
                      "tractor_orders": round(daily_report.get(state).get("C2Cs on New Platform").get("Tractor+Harvestor").get("Count"), 0),
                      "implement_hours": round(daily_report.get(state).get("C2Cs on New Platform").get("Implements only").get("Completed Hrs"), 0),
@@ -613,7 +622,7 @@ def generate_daily_report_html(aggregate_c2c_franchisee, email_html, yesterday, 
                     <td>%(mtd_total)s</td>
                 </tr>
             """  % { "c2cs_new": "C2Cs on New Platform",
-                     "color" : "#94b1fd",
+                     "color" : "#9bc4ff",
                      "yesterday_c2c": round(aggregate_c2c_franchisee[state]["C2Cs on New Platform"]["C2C"], 0),
                      "yesterday_franchisee": round(aggregate_c2c_franchisee[state]["C2Cs on New Platform"]["Franchisee"],0),
                      "yesterday_total": round(aggregate_c2c_franchisee[state]["C2Cs on New Platform"]["Total"], 0),
@@ -685,7 +694,7 @@ def transform_orders(orders_old_pf, fname):
     print(dates)
     for row in sheet:
         if (yesterday.strftime("%m/%Y") in row[order_date_index] and row[order_date_index] in dates) and (row[status_index] == "Payment Completed" or row[status_index] == "Order Completed" or row[status_index] == "Partially Paid" or row[status_index] == "Work Completed"
-         or row[state_index] == "Closed" or row[status_index] == "Feedback" or row[state_index] == "Work Started") and (row[time_index] > 9 and row[time_index]< 1200):
+         or row[status_index] == "Closed" or row[status_index] == "Feedback" or row[status_index] == "Work Started") and (row[time_index] != "" and (int(row[time_index]) > 9 and int(row[time_index])< 1200)):
             
             if row[hub_index] == "Dahegam" and row[state_index] == "india":
                 state = row[first_row.index("Suplier District")].title()
@@ -698,7 +707,7 @@ def transform_orders(orders_old_pf, fname):
             orders[state]["Total"] = orders.get(state).get("Total") or {}
             orders[state]["Total"]["Hours"] = orders.get(state).get("Total").get("Hours") or 0
             orders[state]["Total"]["Orders"] = orders.get(state).get("Total").get("Orders") or 0
-            orders[state]["Total"]["Hours"] = orders.get(state).get("Total").get("Hours") + round(row[time_index]/60, 2)
+            orders[state]["Total"]["Hours"] = orders.get(state).get("Total").get("Hours") + round(int(row[time_index])/60, 2)
             orders[state]["Total"]["Orders"] = orders.get(state).get("Total").get("Orders") + 1
             orders[state]["Total"]["Franchisee"] = orders.get(state).get("Total").get("Franchisee") or 0
             orders[state]["Total"]["C2C"] = orders.get(state).get("Total").get("C2C") or 0
@@ -728,15 +737,14 @@ def transform_orders(orders_old_pf, fname):
             
                 orders[state][row[hub_index]]["orders"] = orders.get(state).get(row[hub_index]).get("orders") or 0
                 orders[state][row[hub_index]]["orders"] = orders.get(state).get(row[hub_index]).get("orders") + 1
-
     
     orders["Total"] = orders.get("Total") or {}
     orders["Total"]["Hours"] = orders.get("Total").get("Hours") or 0
     orders["Total"]["Hours"] = round(orders.get("Total").get("Hours") + hours_count, 2)
     orders["Total"]["Orders"] = orders.get("Total").get("Orders") or 0
     orders["Total"]["Orders"] = orders.get("Total").get("Orders") + orders_count
-    orders["Total"]["C2C"] = round(c2c_hours, 2)
-    orders["Total"]["Francisee"] = round(Franchisee_hours, 2)
+    orders["Total"]["C2C"] = orders.get("Total").get("C2C") + round(c2c_hours, 2)
+    orders["Total"]["Franchisee"] = orders.get("Total").get("Franchisee") + round(Franchisee_hours, 2)
     
     print("new pf orders  =" + format(orders_count))
     print("new pf hours = " + format(hours_count))
@@ -753,8 +761,8 @@ def generate_daily_report():
     orders = transform_data("Order_Report_08Mar18.csv", yesterday)
     implements = transform_data_implement("'Implement_Report_08Mar18'.csv", yesterday)
     customers = transform_data_customer("'Customer_Report_08Mar18'.csv", yesterday)
-    c2c_franchinsee = transform_data_c2c_franchisee("Order_Report_08Mar18.csv", "Orders New PF.XLSX", yesterday)
-    final_orders = transform_orders(orders,   "Orders New PF.XLSX")
+    c2c_franchinsee = transform_data_c2c_franchisee("Order_Report_08Mar18.csv", "OrdersNewPF.XLSX", yesterday)
+    final_orders = transform_orders(orders,   "OrdersNewPF.XLSX")
     
     aggregate_daily_report = aggregate_data(final_orders, implements, customers)
     aggregate_c2c_franchisee = aggregate_data_c2c_franchisee(c2c_franchinsee, final_orders)
