@@ -137,14 +137,14 @@ def transform_data_c2c_franchisee(old_file_name, new_report, yesterday):
             order_reports[state]["Total"]["Franchisee"] = order_reports.get(state).get("Total").get("Franchisee") or 0
             order_reports[state]["Total"]["C2C"] = order_reports.get(state).get("Total").get("C2C") or 0
             order_reports[state]["Total"]["Total"] = order_reports.get(state).get("Total").get("Total") or 0
+            order_reports[state]["C2Cs on New Platform"] = order_reports.get(state).get("C2Cs on New Platform") or {}
+            order_reports[state]["C2Cs on New Platform"]["C2C"] = order_reports.get(state).get("C2Cs on New Platform").get("C2C") or 0
+            order_reports[state]["C2Cs on New Platform"]["Franchisee"] = order_reports.get(state).get("C2Cs on New Platform").get("Franchisee") or 0
+            order_reports[state]["C2Cs on New Platform"]["Total"] = order_reports.get(state).get("C2Cs on New Platform").get("Total") or 0
 
             if not row[hub_index]:
                 c2c_hours += round(row[time_index]/60, 2)
-                order_reports[state]["C2Cs on New Platform"] = order_reports.get(state).get("C2Cs on New Platform") or {}
-                order_reports[state]["C2Cs on New Platform"]["C2C"] = order_reports.get(state).get("C2Cs on New Platform").get("C2C") or 0
-                order_reports[state]["C2Cs on New Platform"]["Franchisee"] = order_reports.get(state).get("C2Cs on New Platform").get("Franchisee") or 0
                 order_reports[state]["C2Cs on New Platform"]["C2C"] = order_reports.get(state).get("C2Cs on New Platform").get("C2C") + round(row[time_index]/60, 2)
-                order_reports[state]["C2Cs on New Platform"]["Total"] = order_reports.get(state).get("C2Cs on New Platform").get("Total") or 0
                 order_reports[state]["C2Cs on New Platform"]["Total"] = order_reports.get(state).get("C2Cs on New Platform").get("Total") + order_reports.get(state).get("C2Cs on New Platform").get("C2C") 
                 order_reports[state]["Total"]["C2C"] = order_reports.get(state).get("Total").get("C2C") + round(row[time_index]/60, 2)
             else:
@@ -649,6 +649,7 @@ def transform_orders(orders_old_pf, fname):
     status_index = first_row.index("Status")
     driver_type_index = first_row.index("Driver Type")
     time_index = first_row.index("Minutes")
+    sku_index = first_row.index("sku_repr")
     sheet.name_columns_by_row(0)
     orders_count = 0
     hours_count = 0
@@ -694,7 +695,7 @@ def transform_orders(orders_old_pf, fname):
     print(dates)
     for row in sheet:
         if (yesterday.strftime("%m/%Y") in row[order_date_index] and row[order_date_index] in dates) and (row[status_index] == "Payment Completed" or row[status_index] == "Order Completed" or row[status_index] == "Partially Paid" or row[status_index] == "Work Completed"
-         or row[status_index] == "Closed" or row[status_index] == "Feedback" or row[status_index] == "Work Started") and (row[time_index] != "" and (int(row[time_index]) > 9 and int(row[time_index])< 1200)):
+         or row[status_index] == "Closed" or row[status_index] == "Feedback" or row[status_index] == "Work Started") and (row[time_index] != "" and (int(row[time_index]) > 9 and int(row[time_index])< 1200)) and (row[sku_index] != "" and row[sku_index][-1] == "0"):
             
             if row[hub_index] == "Dahegam" and row[state_index] == "india":
                 state = row[first_row.index("Suplier District")].title()
@@ -758,11 +759,11 @@ def generate_daily_report():
     # subprocess.call("./automate.sh")
     yesterday = date.today() - timedelta(1)
     
-    orders = transform_data("Order_Report_08Mar18.csv", yesterday)
-    implements = transform_data_implement("'Implement_Report_08Mar18'.csv", yesterday)
-    customers = transform_data_customer("'Customer_Report_08Mar18'.csv", yesterday)
-    c2c_franchinsee = transform_data_c2c_franchisee("Order_Report_08Mar18.csv", "OrdersNewPF.XLSX", yesterday)
-    final_orders = transform_orders(orders,   "OrdersNewPF.XLSX")
+    orders = transform_data("Order_Report_12Mar18.csv", yesterday)
+    implements = transform_data_implement("'Implement_Report_12Mar18'.csv", yesterday)
+    customers = transform_data_customer("'Customer_Report_12Mar18'.csv", yesterday)
+    c2c_franchinsee = transform_data_c2c_franchisee("Order_Report_12Mar18.csv", "Orders New PF-12Mar.xlsx", yesterday)
+    final_orders = transform_orders(orders,   "Orders New PF-12Mar.xlsx")
     
     aggregate_daily_report = aggregate_data(final_orders, implements, customers)
     aggregate_c2c_franchisee = aggregate_data_c2c_franchisee(c2c_franchinsee, final_orders)
