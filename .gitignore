@@ -10,3 +10,4 @@ automateDailyReport/*.ods
 automateDailyReport/.~lock.*
 automateDailyReport/*.XLSX
 automateDailyReport/*.json
+automateDailyReport/myCoookie
