@@ -8,3 +8,5 @@ automateDailyReport/*.csv
 automateDailyReport/*.xlsx
 automateDailyReport/*.ods
 automateDailyReport/.~lock.*
+automateDailyReport/*.XLSX
+automateDailyReport/*.json
