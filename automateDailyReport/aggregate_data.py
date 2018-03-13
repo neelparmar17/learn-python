@@ -8,44 +8,73 @@ def aggregate_data(orders, implements, customers):
     for state in orders:
         daily_report[state] = daily_report.get(state) or {}
         if state != "Total":
-            for hub in orders[state]:
-                if hub != "Total":
-                    daily_report[state][hub] = daily_report.get(state).get(hub) or {}
-                    daily_report[state][hub]["Tractor+Harvestor"] = daily_report.get(state).get(hub).get("Tractor+Harvestor") or {}
-                    daily_report[state][hub]["Implements only"] = daily_report.get(state).get(hub).get("Implements only") or {"Completed Hrs": 0, "Count": 0}
-                    daily_report[state][hub]["Registered Farmers"] = daily_report.get(state).get(hub).get("Registered Farmers") or {"Count": 0}
-                    daily_report[state][hub]["Tractor+Harvestor"]["Completed Hrs"] = round(orders[state][hub]["C2C"] + orders[state][hub]["Franchisee"], 2)
-                    daily_report[state][hub]["Tractor+Harvestor"]["Count"] = orders[state][hub]["orders"]
-                else:
+            for district in orders[state]:
+                daily_report[state][district] = daily_report.get(state).get(district) or {}
+                if district != "Total" and district != "C2Cs on New Platform":
+                    for hub in orders[state][district]:
+                        if hub != "Total":
+                            daily_report[state][district][hub] = daily_report.get(state).get(district).get(hub) or {}
+                            daily_report[state][district][hub]["Tractor+Harvestor"] = daily_report.get(state).get(district).get(hub).get("Tractor+Harvestor") or {}
+                            daily_report[state][district][hub]["Implements only"] = daily_report.get(state).get(district).get(hub).get("Implements only") or {"Completed Hrs": 0, "Count": 0}
+                            daily_report[state][district][hub]["Registered Farmers"] = daily_report.get(state).get(district).get(hub).get("Registered Farmers") or {"Count": 0}
+                            daily_report[state][district][hub]["Tractor+Harvestor"]["Completed Hrs"] = round(orders[state][district][hub]["C2C"] + orders[state][district][hub]["Franchisee"], 2)
+                            daily_report[state][district][hub]["Tractor+Harvestor"]["Count"] = orders[state][district][hub]["orders"]
+                        if hub == "Total":
+                            daily_report[state][district]["Total"] = daily_report.get(state).get(district).get("Total") or {}
+                            daily_report[state][district]["Total"]["Tractor+Harvestor"] = daily_report.get(state).get(district).get("Total").get("Tractor+Harvestor") or {}
+                            daily_report[state][district]["Total"]["Implements only"] = daily_report.get(state).get(district).get("Total").get("Implements only") or {"Completed Hrs": 0, "Count": 0}
+                            daily_report[state][district]["Total"]["Registered Farmers"] = daily_report.get(state).get(district).get("Total").get("Registered Farmers") or {"Count": 0}
+                            daily_report[state][district]["Total"]["Tractor+Harvestor"]["Completed Hrs"] = round(orders[state][district]["Total"]["Hours"], 2)
+                            daily_report[state][district]["Total"]["Tractor+Harvestor"]["Count"] = orders[state][district]["Total"]["Orders"]
+                elif district=="Total":
                     daily_report[state]["Total"] = daily_report.get(state).get("Total") or {}
                     daily_report[state]["Total"]["Tractor+Harvestor"] = daily_report.get(state).get("Total").get("Tractor+Harvestor") or {}
                     daily_report[state]["Total"]["Implements only"] = daily_report.get(state).get("Total").get("Implements only") or {"Completed Hrs": 0, "Count": 0}
                     daily_report[state]["Total"]["Registered Farmers"] = daily_report.get(state).get("Total").get("Registered Farmers") or {"Count": 0}
                     daily_report[state]["Total"]["Tractor+Harvestor"]["Completed Hrs"] = round(orders.get(state).get("Total").get("Hours"), 2)
                     daily_report[state]["Total"]["Tractor+Harvestor"]["Count"] = orders.get(state).get("Total").get("Orders")
+                elif district == "C2Cs on New Platform":
+                    daily_report[state]["C2Cs on New Platform"] = daily_report.get(state).get("C2Cs on New Platform") or {}
+                    daily_report[state]["C2Cs on New Platform"]["Tractor+Harvestor"] = daily_report.get(state).get("C2Cs on New Platform").get("Tractor+Harvestor") or {}
+                    daily_report[state]["C2Cs on New Platform"]["Implements only"] = daily_report.get(state).get("C2Cs on New Platform").get("Implements only") or {"Completed Hrs": 0, "Count": 0}
+                    daily_report[state]["C2Cs on New Platform"]["Registered Farmers"] = daily_report.get(state).get("C2Cs on New Platform").get("Registered Farmers") or {"Count": 0}
+                    daily_report[state]["C2Cs on New Platform"]["Tractor+Harvestor"]["Completed Hrs"] = round(orders[state]["C2Cs on New Platform"]["C2C"] + orders[state]["C2Cs on New Platform"]["Franchisee"], 2)
+                    daily_report[state]["C2Cs on New Platform"]["Tractor+Harvestor"]["Count"] = orders[state]["C2Cs on New Platform"]["orders"]
+
         else:
             daily_report[state]["Order Hours"] = orders[state]["Hours"]
             daily_report[state]["Order Count"] = orders[state]["Orders"]
 
+  
     for state in implements:
         daily_report[state] = daily_report.get(state) or {}
         if state != "Total":
-            for hub in implements[state]:
-                if hub != "Total" and hub != "C2Cs on New Platform":
-                    daily_report[state][hub] = daily_report.get(state).get(hub) or {}
-                    daily_report[state][hub]["Implements only"] = daily_report.get(state).get(hub).get("Implements only") or {}
-                    daily_report[state][hub]["Tractor+Harvestor"] = daily_report.get(state).get(hub).get("Tractor+Harvestor") or {"Completed Hrs": 0, "Count": 0}
-                    daily_report[state][hub]["Registered Farmers"] = daily_report.get(state).get(hub).get("Registered Farmers") or {"Count": 0}
-                    daily_report[state][hub]["Implements only"]["Completed Hrs"] = implements[state][hub]["Completed Hrs"]
-                    daily_report[state][hub]["Implements only"]["Count"] = implements[state][hub]["Count"]
-                elif hub == "Total":
+            for district in implements[state]:
+                daily_report[state][district] = daily_report.get(state).get(district) or {}
+                if district != "Total" and district != "C2Cs on New Platform":
+                    for hub in implements[state][district]:
+                        if hub != "Total":
+                            daily_report[state][district][hub] = daily_report.get(state).get(district).get(hub) or {}
+                            daily_report[state][district][hub]["Implements only"] = daily_report.get(state).get(district).get(hub).get("Implements only") or {}
+                            daily_report[state][district][hub]["Tractor+Harvestor"] = daily_report.get(state).get(district).get(hub).get("Tractor+Harvestor") or {"Completed Hrs": 0, "Count": 0}
+                            daily_report[state][district][hub]["Registered Farmers"] = daily_report.get(state).get(district).get(hub).get("Registered Farmers") or {"Count": 0}
+                            daily_report[state][district][hub]["Implements only"]["Completed Hrs"] = implements[state][district][hub]["Completed Hrs"]
+                            daily_report[state][district][hub]["Implements only"]["Count"] = implements[state][district][hub]["Count"]
+                        elif hub == "Total":
+                            daily_report[state][district]["Total"] = daily_report.get(state).get(district).get("Total") or {}
+                            daily_report[state][district]["Total"]["Implements only"] = daily_report.get(state).get(district).get("Total").get("Implements only") or {}
+                            daily_report[state][district]["Total"]["Tractor+Harvestor"] = daily_report.get(state).get(district).get("Total").get("Tractor+Harvestor") or {"Completed Hrs": 0, "Count": 0}
+                            daily_report[state][district]["Total"]["Registered Farmers"] = daily_report.get(state).get(district).get("Total").get("Registered Farmers") or {"Count": 0}
+                            daily_report[state][district]["Total"]["Implements only"]["Completed Hrs"] = round(implements[state][district]["Total"]["Hours"], 2)
+                            daily_report[state][district]["Total"]["Implements only"]["Count"] = implements[state][district]["Total"]["Orders"]        
+                elif district == "Total":
                     daily_report[state]["Total"] = daily_report.get(state).get("Total") or {}
                     daily_report[state]["Total"]["Implements only"] = daily_report.get(state).get("Total").get("Implements only") or {}
                     daily_report[state]["Total"]["Tractor+Harvestor"] = daily_report.get(state).get("Total").get("Tractor+Harvestor") or {"Completed Hrs": 0, "Count": 0}
                     daily_report[state]["Total"]["Registered Farmers"] = daily_report.get(state).get("Total").get("Registered Farmers") or {"Count": 0}
                     daily_report[state]["Total"]["Implements only"]["Completed Hrs"] = round(implements[state]["Total"]["Hours"], 2)
                     daily_report[state]["Total"]["Implements only"]["Count"] = implements[state]["Total"]["Orders"]
-                elif hub == "C2Cs on New Platform":
+                elif district == "C2Cs on New Platform":
                     daily_report[state]["C2Cs on New Platform"] = daily_report.get(state).get("C2Cs on New Platform") or {}
                     daily_report[state]["C2Cs on New Platform"]["Implements only"] = daily_report.get(state).get("C2Cs on New Platform").get("Implements only") or {}
                     daily_report[state]["C2Cs on New Platform"]["Tractor+Harvestor"] = daily_report.get(state).get("C2Cs on New Platform").get("Tractor+Harvestor") or {"Completed Hrs": 0, "Count": 0}
@@ -56,23 +85,33 @@ def aggregate_data(orders, implements, customers):
             daily_report[state]["Implement Hours"] = implements[state]["Hours"]
             daily_report[state]["Implement Orders"] = implements[state]["Orders"]
 
+    
     for state in customers:
         daily_report[state] = daily_report.get(state) or {}
         if state != "Total":
-            for hub in customers[state]:
-                if hub != "Total" and hub != "C2Cs on New Platform":
-                    daily_report[state][hub] = daily_report.get(state).get(hub) or {}
-                    daily_report[state][hub]["Registered Farmers"] = daily_report.get(state).get(hub).get("Registered Farmers") or {}
-                    daily_report[state][hub]["Implements only"] = daily_report.get(state).get(hub).get("Implements only") or {"Completed Hrs": 0, "Count": 0}
-                    daily_report[state][hub]["Tractor+Harvestor"] = daily_report.get(state).get(hub).get("Tractor+Harvestor") or {"Completed Hrs": 0, "Count": 0}
-                    daily_report[state][hub]["Registered Farmers"]["Count"] = customers[state][hub]["Count"]
-                elif hub == "Total":
+            for district in customers[state]:
+                daily_report[state][district] = daily_report.get(state).get(district) or {}
+                if district != "Total" and district != "C2Cs on New Platform":
+                    for hub in customers[state][district]:
+                        if hub != "Total":
+                            daily_report[state][district][hub] = daily_report.get(state).get(district).get(hub) or {}
+                            daily_report[state][district][hub]["Registered Farmers"] = daily_report.get(state).get(district).get(hub).get("Registered Farmers") or {}
+                            daily_report[state][district][hub]["Implements only"] = daily_report.get(state).get(district).get(hub).get("Implements only") or {"Completed Hrs": 0, "Count": 0}
+                            daily_report[state][district][hub]["Tractor+Harvestor"] = daily_report.get(state).get(district).get(hub).get("Tractor+Harvestor") or {"Completed Hrs": 0, "Count": 0}
+                            daily_report[state][district][hub]["Registered Farmers"]["Count"] = customers[state][district][hub]["Count"]
+                        elif hub == "Total":
+                            daily_report[state][district]["Total"] = daily_report.get(state).get(district).get("Total") or {}
+                            daily_report[state][district]["Total"]["Registered Farmers"] = daily_report.get(state).get(district).get("Total").get("Registered Farmers") or {}
+                            daily_report[state][district]["Total"]["Implements only"] = daily_report.get(state).get(district).get("Total").get("Implements only") or {"Completed Hrs": 0, "Count": 0}
+                            daily_report[state][district]["Total"]["Tractor+Harvestor"] = daily_report.get(state).get(district).get("Total").get("Tractor+Harvestor") or {"Completed Hrs": 0, "Count": 0}
+                            daily_report[state][district]["Total"]["Registered Farmers"]["Count"] = customers[state][district]["Total"]["Count"]
+                elif district == "Total":
                     daily_report[state]["Total"] = daily_report.get(state).get("Total") or {}
                     daily_report[state]["Total"]["Registered Farmers"] = daily_report.get(state).get("Total").get("Registered Farmers") or {}
                     daily_report[state]["Total"]["Implements only"] = daily_report.get(state).get("Total").get("Implements only") or {"Completed Hrs": 0, "Count": 0}
                     daily_report[state]["Total"]["Tractor+Harvestor"] = daily_report.get(state).get("Total").get("Tractor+Harvestor") or {"Completed Hrs": 0, "Count": 0}
                     daily_report[state]["Total"]["Registered Farmers"]["Count"] = customers[state]["Total"]["Count"]
-                elif hub == "C2Cs on New Platform":
+                elif district == "C2Cs on New Platform":
                     daily_report[state]["C2Cs on New Platform"] = daily_report.get(state).get("C2Cs on New Platform") or {}
                     daily_report[state]["C2Cs on New Platform"]["Registered Farmers"] = daily_report.get(state).get("C2Cs on New Platform").get("Registered Farmers") or {}
                     daily_report[state]["C2Cs on New Platform"]["Implements only"] = daily_report.get(state).get("C2Cs on New Platform").get("Implements only") or {"Completed Hrs": 0, "Count": 0}

@@ -57,8 +57,15 @@ def generate_html(daily_report, yesterday):
               }
 
     for state in daily_report:
-        rowspan = format(len(daily_report[state].keys()))
+        print(state)
+        # print(len(daily_report[state].keys()))
+        rowspan = len(daily_report[state].keys())
+            
         if state != "Total":
+            for district in daily_report[state]:
+                if district!="Total" and district != "C2Cs on New Platform":
+                    rowspan += (len(daily_report[state][district].keys()) -1)
+            print(rowspan)
             email_html+= """
                 <tr>
                     <td rowspan = %(rowspan)s>
@@ -80,40 +87,61 @@ def generate_html(daily_report, yesterday):
                 "implement count": round(daily_report.get(state).get("Total").get("Implements only").get("Count"), 0),
                 "customer count": round(daily_report.get(state).get("Total").get("Registered Farmers").get("Count"), 0),
                 }
-
-            for hub in daily_report[state]:
-                if hub != "Total" and hub != "C2Cs on New Platform":
+            
+            for district in daily_report[state]:
+                if district != "Total" and district != "C2Cs on New Platform":
                     email_html += """
-                        <tr>
-                            <td bgcolor= "%(color)s">
-                                %(hub)s
-                            </td>
-                            <td>
-                                %(tractor_hours)s
-                            </td>
-                            <td>
-                                %(tractor_orders)s
-                            </td>
-                            <td>
-                                %(implement_hours)s
-                            </td>
-                            <td>
-                                %(implement_orders)s
-                            </td>
-                            <td>
-                                %(farmer_count)s
-                            </td>
-
+                        <tr bgcolor = "%(color)s">
+                            <td>%(district)s(%(num)s hubs)</td>
+                            <td>%(tractor_hours)s</td>
+                            <td>%(tractor_orders)s</td>
+                            <td>%(implement_hours)s</td>
+                            <td>%(implement_orders)s</td>
+                            <td>%(farmer_count)s</td>
                         </tr>
-                    """ % { "hub": hub,
-                            "color": "#fb9393" if (daily_report[state][hub]["Tractor+Harvestor"]["Completed Hrs"] == 0 and daily_report[state][hub]["Implements only"]["Completed Hrs"] == 0 and daily_report[state][hub]["Tractor+Harvestor"]["Count"] == 0 and daily_report[state][hub]["Implements only"]["Count"] == 0) else "#ffffff",
-                            "tractor_hours": round(daily_report[state][hub]["Tractor+Harvestor"]["Completed Hrs"], 0),
-                            "tractor_orders": round(daily_report[state][hub]["Tractor+Harvestor"]["Count"], 0),
-                            "implement_hours": round(daily_report[state][hub]["Implements only"]["Completed Hrs"], 0),
-                            "implement_orders": round(daily_report[state][hub]["Implements only"]["Count"], 0),
-                            "farmer_count": round(daily_report[state][hub]["Registered Farmers"]["Count"], 0),
-                        }
-            print(state)
+                    """ % {
+                        "color": "#f0ffa3",
+                        "district": district,
+                        "num": len(daily_report.get(state).get(district).keys()) - 1,
+                        "tractor_hours": round(daily_report.get(state).get(district).get("Total").get("Tractor+Harvestor").get("Completed Hrs"), 0),
+                        "tractor_orders":round(daily_report.get(state).get(district).get("Total").get("Tractor+Harvestor").get("Count"), 0),
+                        "implement_hours": round(daily_report.get(state).get(district).get("Total").get("Implements only").get("Completed Hrs"), 0),
+                        "implement_orders":round(daily_report.get(state).get(district).get("Total").get("Implements only").get("Count"), 0),
+                        "farmer_count": round(daily_report.get(state).get(district).get("Total").get("Registered Farmers").get("Count"), 0),
+                    }
+
+                    for hub in daily_report[state][district]:
+                        if hub != "Total" and hub != "C2Cs on New Platform":
+                            email_html += """
+                                <tr>
+                                    <td bgcolor= "%(color)s">
+                                        %(hub)s
+                                    </td>
+                                    <td>
+                                        %(tractor_hours)s
+                                    </td>
+                                    <td>
+                                        %(tractor_orders)s
+                                    </td>
+                                    <td>
+                                        %(implement_hours)s
+                                    </td>
+                                    <td>
+                                        %(implement_orders)s
+                                    </td>
+                                    <td>
+                                        %(farmer_count)s
+                                    </td>
+
+                                </tr>
+                            """ % { "hub": hub,
+                                    "color": "#fb9393" if (daily_report[state][district][hub]["Tractor+Harvestor"]["Completed Hrs"] == 0 and daily_report[state][district][hub]["Implements only"]["Completed Hrs"] == 0 and daily_report[state][district][hub]["Tractor+Harvestor"]["Count"] == 0 and daily_report[state][district][hub]["Implements only"]["Count"] == 0) else "#ffffff",
+                                    "tractor_hours": round(daily_report[state][district][hub]["Tractor+Harvestor"]["Completed Hrs"], 0),
+                                    "tractor_orders": round(daily_report[state][district][hub]["Tractor+Harvestor"]["Count"], 0),
+                                    "implement_hours": round(daily_report[state][district][hub]["Implements only"]["Completed Hrs"], 0),
+                                    "implement_orders": round(daily_report[state][district][hub]["Implements only"]["Count"], 0),
+                                    "farmer_count": round(daily_report[state][district][hub]["Registered Farmers"]["Count"], 0),
+                                }
             email_html += """
                 <tr bgcolor = %(color)s>
                     <td>%(c2c_new)s</td>
