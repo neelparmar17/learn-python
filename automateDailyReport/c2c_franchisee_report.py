@@ -18,6 +18,7 @@ def transform_data_c2c_franchisee(old_file_name, new_report, yesterday):
     orders_count = 0
     hours_count = 0
 
+
     c2c_hours = 0
     Franchisee_hours = 0
     total = 0
@@ -26,35 +27,57 @@ def transform_data_c2c_franchisee(old_file_name, new_report, yesterday):
     print("day before yesterday  " + format(day_before_yesterday))
 
     for row in input_file:
+        state_name = row["State"]
+        hub_name = row["Hub"]
+        district = row["District"]
         if row["Status"] == "Completed" and row["Order Date"] == day_before_yesterday:
-            order_reports[row["State"]] = order_reports.get(row["State"]) or {}
-            order_reports[row["State"]][row["Hub"]] = order_reports.get(row["State"]).get(row["Hub"]) or {}
-            order_reports[row["State"]][row["Hub"]]["Franchisee"] = order_reports.get(row["State"]).get(row["Hub"]).get("Franchisee") or 0
-            order_reports[row["State"]][row["Hub"]]["C2C"] = order_reports.get(row["State"]).get(row["Hub"]).get("C2C") or 0
-            order_reports[row["State"]]["Total"] = order_reports.get(row["State"]).get("Total") or {}
-            order_reports[row["State"]]["Total"]["C2C"] = order_reports.get(row["State"]).get("Total").get("C2C") or 0
-            order_reports[row["State"]]["Total"]["Franchisee"] = order_reports.get(row["State"]).get("Total").get("Franchisee") or 0
-            order_reports[row["State"]]["Total"]["Total"] = order_reports.get(row["State"]).get("Total").get("Total") or 0
+            order_reports[state_name] = order_reports.get(state_name) or {}
             
-            order_reports[row["State"]]["C2Cs on New Platform"] = order_reports.get(row["State"]).get("C2Cs on New Platform") or {}
-            order_reports[row["State"]]["C2Cs on New Platform"]["C2C"] = order_reports.get(row["State"]).get("C2Cs on New Platform").get("C2C") or 0
-            order_reports[row["State"]]["C2Cs on New Platform"]["Franchisee"] = order_reports.get(row["State"]).get("C2Cs on New Platform").get("Franchisee") or 0
-            order_reports[row["State"]]["C2Cs on New Platform"]["Total"] = order_reports.get(row["State"]).get("C2Cs on New Platform").get("Total") or 0
+            
+            order_reports[state_name][district] = order_reports.get(state_name).get(district) or {}
+
+            order_reports[state_name][district][hub_name] = order_reports.get(state_name).get(district).get(hub_name) or {}
+            order_reports[state_name][district][hub_name]["Franchisee"] = order_reports.get(state_name).get(district).get(hub_name).get("Franchisee") or 0
+            order_reports[state_name][district][hub_name]["C2C"] = order_reports.get(state_name).get(district).get(hub_name).get("C2C") or 0
+            
+            order_reports[state_name][district]["Total"] = order_reports.get(state_name).get(district).get("Total") or {}
+            order_reports[state_name][district]["Total"]["C2C"] = order_reports.get(state_name).get(district).get("Total").get("C2C") or 0
+            order_reports[state_name][district]["Total"]["Franchisee"] = order_reports.get(state_name).get(district).get("Total").get("Franchisee") or 0
+            order_reports[state_name][district]["Total"]["Total"] = order_reports.get(state_name).get(district).get("Total").get("Total") or 0
+
+            order_reports[state_name]["Total"] = order_reports.get(state_name).get("Total") or {}
+            order_reports[state_name]["Total"]["C2C"] = order_reports.get(state_name).get("Total").get("C2C") or 0
+            order_reports[state_name]["Total"]["Franchisee"] = order_reports.get(state_name).get("Total").get("Franchisee") or 0
+            order_reports[state_name]["Total"]["Total"] = order_reports.get(state_name).get("Total").get("Total") or 0
+            
+            order_reports[state_name]["C2Cs on New Platform"] = order_reports.get(state_name).get("C2Cs on New Platform") or {}
+            order_reports[state_name]["C2Cs on New Platform"]["C2C"] = order_reports.get(state_name).get("C2Cs on New Platform").get("C2C") or 0
+            order_reports[state_name]["C2Cs on New Platform"]["Franchisee"] = order_reports.get(state_name).get("C2Cs on New Platform").get("Franchisee") or 0
+            order_reports[state_name]["C2Cs on New Platform"]["Total"] = order_reports.get(state_name).get("C2Cs on New Platform").get("Total") or 0
+
 
             if row["Driver Type"] == "Franchisee":
                 Franchisee_hours += round(float(row["Hours"]), 2)
-                order_reports[row["State"]]["Total"]["Franchisee"] = order_reports.get(row["State"]).get("Total").get("Franchisee") + round(float(row["Hours"]), 2)
-                order_reports[row["State"]][row["Hub"]]["Franchisee"] = order_reports.get(row["State"]).get(row["Hub"]).get("Franchisee") + round(float(row["Hours"]), 2)
+                order_reports[state_name]["Total"]["Franchisee"] = order_reports.get(state_name).get("Total").get("Franchisee") + round(float(row["Hours"]), 2)
+                order_reports[state_name][district][hub_name]["Franchisee"] = order_reports.get(state_name).get(district).get(hub_name).get("Franchisee") + round(float(row["Hours"]), 2)
+                order_reports[state_name][district]["Total"]["Franchisee"] = order_reports.get(state_name).get(district).get("Total").get("Franchisee") + round(float(row["Hours"]), 2)
             
             if row["Driver Type"] == "C2C":
                 c2c_hours += round(float(row["Hours"]), 2)
-                order_reports[row["State"]]["Total"]["C2C"] = order_reports.get(row["State"]).get("Total").get("C2C") + round(float(row["Hours"]), 2)
-                order_reports[row["State"]][row["Hub"]]["C2C"] = order_reports.get(row["State"]).get(row["Hub"]).get("C2C") + round(float(row["Hours"]), 2)
+                order_reports[state_name]["Total"]["C2C"] = order_reports.get(state_name).get("Total").get("C2C") + round(float(row["Hours"]), 2)
+                order_reports[state_name][district][hub_name]["C2C"] = order_reports.get(state_name).get(district).get(hub_name).get("C2C") + round(float(row["Hours"]), 2)
+                order_reports[state_name][district]["Total"]["C2C"] = order_reports.get(state_name).get(district).get("Total").get("C2C") + round(float(row["Hours"]), 2)
+
             total += round(float(row["Hours"]), 2)
-            order_reports[row["State"]][row["Hub"]]["Total"] = order_reports.get(row["State"]).get(row["Hub"]).get("Total") or 0
-            order_reports[row["State"]][row["Hub"]]["Total"] = (round(order_reports.get(row["State"]).get(row["Hub"]).get("Franchisee") + order_reports.get(row["State"]).get(row["Hub"]).get("C2C"), 2))
-            order_reports[row["State"]]["Total"]["Total"] = (order_reports.get(row["State"]).get("Total").get("C2C") 
-                + order_reports.get(row["State"]).get("Total").get("Franchisee"))
+            order_reports[state_name][district][hub_name]["Total"] = order_reports.get(state_name).get(district).get(hub_name).get("Total") or 0
+            order_reports[state_name][district][hub_name]["Total"] = (round(order_reports.get(state_name).get(district).get(hub_name).get("Franchisee")
+                + order_reports.get(state_name).get(district).get(hub_name).get("C2C"), 2))
+            
+            order_reports[state_name]["Total"]["Total"] = (order_reports.get(state_name).get("Total").get("C2C") 
+                + order_reports.get(state_name).get("Total").get("Franchisee"))
+            
+            order_reports[state_name][district]["Total"]["Total"] = (order_reports.get(state_name).get(district).get("Total").get("Franchisee")
+                + order_reports.get(state_name).get(district).get("Total").get("C2C"))
 
     print("old pf franchisee = " + format(Franchisee_hours))
     print("old pf total = " + format(total))
@@ -66,8 +89,11 @@ def transform_data_c2c_franchisee(old_file_name, new_report, yesterday):
             
             if row[hub_index] == "Dahegam" and row[state_index] == "india":
                 state = row[first_row.index("Suplier District")].title()
+                district = "Gandhinagar".title()
             else:
-                state = row[state_index].title() 
+                state = row[state_index].title()
+                district = row[first_row.index("Suplier District")].title()
+
             new_pf_total += round(row[time_index]/60, 2)
             total += round(row[time_index]/60, 2)
             order_reports[state] = order_reports.get(state) or {}
@@ -80,29 +106,43 @@ def transform_data_c2c_franchisee(old_file_name, new_report, yesterday):
             order_reports[state]["C2Cs on New Platform"]["Franchisee"] = order_reports.get(state).get("C2Cs on New Platform").get("Franchisee") or 0
             order_reports[state]["C2Cs on New Platform"]["Total"] = order_reports.get(state).get("C2Cs on New Platform").get("Total") or 0
 
+            order_reports[state][district] = order_reports.get(state).get(district) or {}
+            order_reports[state][district]["Total"] = order_reports.get(state).get(district).get("Total") or {}
+            order_reports[state][district]["Total"]["C2C"] = order_reports.get(state).get(district).get("Total").get("C2C") or 0
+            order_reports[state][district]["Total"]["Franchisee"] = order_reports.get(state).get(district).get("Total").get("Franchisee") or 0
+            order_reports[state][district]["Total"]["Total"] = order_reports.get(state).get(district).get("Total").get("Total") or 0
+
             if not row[hub_index]:
                 c2c_hours += round(row[time_index]/60, 2)
                 order_reports[state]["C2Cs on New Platform"]["C2C"] = order_reports.get(state).get("C2Cs on New Platform").get("C2C") + round(row[time_index]/60, 2)
-                order_reports[state]["C2Cs on New Platform"]["Total"] = order_reports.get(state).get("C2Cs on New Platform").get("Total") + order_reports.get(state).get("C2Cs on New Platform").get("C2C") 
+                order_reports[state]["C2Cs on New Platform"]["Total"] = (order_reports.get(state).get("C2Cs on New Platform").get("Total") 
+                    + order_reports.get(state).get("C2Cs on New Platform").get("C2C") )
                 order_reports[state]["Total"]["C2C"] = order_reports.get(state).get("Total").get("C2C") + round(row[time_index]/60, 2)
+                order_reports[state][district]["Total"]["C2C"] = order_reports.get(state).get(district).get("Total").get("C2C") + round(row[time_index]/60, 2)
             else:
-                order_reports[state][row[hub_index]] = order_reports.get(state).get(row[hub_index]) or {}
-                order_reports[state][row[hub_index]]["C2C"] = order_reports.get(state).get(row[hub_index]).get("C2C") or 0
-                order_reports[state][row[hub_index]]["Franchisee"] = order_reports.get(state).get(row[hub_index]).get("Franchisee") or 0
-                order_reports[state][row[hub_index]]["Total"] = order_reports.get(state).get(row[hub_index]).get("Total") or 0
+                order_reports[state][district][row[hub_index]] = order_reports.get(state).get(district).get(row[hub_index]) or {}
+                order_reports[state][district][row[hub_index]]["C2C"] = order_reports.get(state).get(district).get(row[hub_index]).get("C2C") or 0
+                order_reports[state][district][row[hub_index]]["Franchisee"] = order_reports.get(state).get(district).get(row[hub_index]).get("Franchisee") or 0
+                order_reports[state][district][row[hub_index]]["Total"] = order_reports.get(state).get(district).get(row[hub_index]).get("Total") or 0
 
                 new_franchisee += row[time_index]
                 if row[driver_type_index] == "HUB":
                     Franchisee_hours += round(row[time_index]/60, 2)
-                    order_reports[state][row[hub_index]]["Franchisee"] = order_reports.get(state).get(row[hub_index]).get("Franchisee") + round(row[time_index]/60, 2)
+                    order_reports[state][district][row[hub_index]]["Franchisee"] = order_reports.get(state).get(district).get(row[hub_index]).get("Franchisee") + round(row[time_index]/60, 2)
+                    order_reports[state][district]["Total"]["Franchisee"] = order_reports.get(state).get(district).get("Total").get("Franchisee") + round(row[time_index]/60, 2)
                     order_reports[state]["Total"]["Franchisee"] = order_reports.get(state).get("Total").get("Franchisee") + round(row[time_index]/60, 2)
                 elif row[driver_type_index] == "C2C":
                     c2c_hours += round(row[time_index]/60, 2)
-                    order_reports[state][row[hub_index]]["C2C"] = order_reports.get(state).get(row[hub_index]).get("C2C") + round(row[time_index]/60, 2)
+                    order_reports[state][district][row[hub_index]]["C2C"] = order_reports.get(state).get(district).get(row[hub_index]).get("C2C") + round(row[time_index]/60, 2)
+                    order_reports[state][district]["Total"]["C2C"] = order_reports.get(state).get(district).get("Total").get("C2C") + round(row[time_index]/60, 2)
                     order_reports[state]["Total"]["C2C"] = order_reports.get(state).get("Total").get("C2C") + round(row[time_index]/60, 2)
 
-                order_reports[state][row[hub_index]]["Total"] = order_reports.get(state).get(row[hub_index]).get("Franchisee") + order_reports.get(state).get(row[hub_index]).get("C2C")
-            
+                order_reports[state][district][row[hub_index]]["Total"] = (order_reports.get(state).get(district).get(row[hub_index]).get("Franchisee") 
+                    + order_reports.get(state).get(district).get(row[hub_index]).get("C2C"))
+
+                order_reports[state][district]["Total"]["Total"] = (order_reports.get(state).get(district).get("Total").get("C2C")
+                    + order_reports.get(state).get(district).get("Total").get("Franchisee"))
+
             order_reports[state]["Total"]["Total"] = (order_reports.get(state).get("Total").get("Franchisee")
                 + order_reports.get(state).get("Total").get("C2C")
                 + order_reports.get(state).get("C2Cs on New Platform").get("Total")) 

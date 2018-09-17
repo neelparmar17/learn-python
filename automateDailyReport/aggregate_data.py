@@ -132,35 +132,65 @@ def aggregate_data_c2c_franchisee(c2c_franchinsee, orders):
     for state in orders:
         if state != "Total":
             c2c_franchinsee_report[state] = c2c_franchinsee_report.get(state) or {}
-            for hub in orders[state]:
-                if hub != "Total":
-                    c2c_franchinsee_report[state][hub] = c2c_franchinsee_report.get(state).get(hub) or {}
-                    c2c_franchinsee_report[state][hub] = c2c_franchinsee_report.get(state).get(hub) or {}
-                    c2c_franchinsee_report[state][hub]["C2C"] = 0
-                    c2c_franchinsee_report[state][hub]["Franchisee"] = 0
-                    c2c_franchinsee_report[state][hub]["Total"] = 0
-                else:
+            for district in orders[state]:
+                c2c_franchinsee_report[state][district] = c2c_franchinsee_report.get(state).get(district) or {}
+                if district != "Total" and district != "C2Cs on New Platform":
+                    for hub in orders[state][district]:
+                        if hub != "Total":
+                            c2c_franchinsee_report[state][district][hub] = c2c_franchinsee_report.get(state).get(district).get(hub) or {}
+                            c2c_franchinsee_report[state][district][hub] = c2c_franchinsee_report.get(state).get(district).get(hub) or {}
+                            c2c_franchinsee_report[state][district][hub]["C2C"] = 0
+                            c2c_franchinsee_report[state][district][hub]["Franchisee"] = 0
+                            c2c_franchinsee_report[state][district][hub]["Total"] = 0
+                        elif hub == "Total":
+                            c2c_franchinsee_report[state][district]["Total"] = c2c_franchinsee_report.get(state).get(district).get("Total") or {}
+                            c2c_franchinsee_report[state][district]["Total"]["C2C"] = c2c_franchinsee_report.get(state).get(district).get("Total").get("C2C") or 0
+                            c2c_franchinsee_report[state][district]["Total"]["Franchisee"] = c2c_franchinsee_report.get(state).get(district).get("Total").get("Franchisee") or 0
+                            c2c_franchinsee_report[state][district]["Total"]["Total"] = c2c_franchinsee_report.get(state).get(district).get("Total").get("Total") or 0
+                elif district == "Total":
                     c2c_franchinsee_report[state]["Total"] = c2c_franchinsee_report.get(state).get("Total") or {}
                     c2c_franchinsee_report[state]["Total"]["C2C"] = c2c_franchinsee_report.get(state).get("Total").get("C2C") or 0
                     c2c_franchinsee_report[state]["Total"]["Franchisee"] = c2c_franchinsee_report.get(state).get("Total").get("Franchisee") or 0
                     c2c_franchinsee_report[state]["Total"]["Total"] = c2c_franchinsee_report.get(state).get("Total").get("Total") or 0
-    
+                elif district == "C2Cs on New Platform":
+                    c2c_franchinsee_report[state]["C2Cs on New Platform"] = c2c_franchinsee_report.get(state).get("C2Cs on New Platform") or {}
+                    c2c_franchinsee_report[state]["C2Cs on New Platform"]["C2C"] = c2c_franchinsee_report.get(state).get("C2Cs on New Platform").get("C2C") or 0
+                    c2c_franchinsee_report[state]["C2Cs on New Platform"]["Franchisee"] = c2c_franchinsee_report.get(state).get("C2Cs on New Platform").get("Franchisee") or 0
+                    c2c_franchinsee_report[state]["C2Cs on New Platform"]["Total"] = c2c_franchinsee_report.get(state).get("C2Cs on New Platform").get("Total") or 0
+ 
     for state in c2c_franchinsee:
         if state != "Total":
             c2c_franchinsee_report[state] = c2c_franchinsee_report.get(state) or {}
-            for hub in c2c_franchinsee[state]:
-                if hub != "Total":
-                    c2c_franchinsee_report[state][hub] = c2c_franchinsee_report.get(state).get(hub) or {}
-                    c2c_franchinsee_report[state][hub]["C2C"] = 0
-                    c2c_franchinsee_report[state][hub]["Franchisee"] = 0
-                    c2c_franchinsee_report[state][hub]["C2C"] = c2c_franchinsee_report[state][hub]["C2C"] + c2c_franchinsee[state][hub]["C2C"]
-                    c2c_franchinsee_report[state][hub]["Franchisee"] = c2c_franchinsee_report[state][hub]["Franchisee"] + c2c_franchinsee[state][hub]["Franchisee"]
-                    c2c_franchinsee_report[state][hub]["Total"] = c2c_franchinsee_report[state][hub]["Total"] + c2c_franchinsee[state][hub]["Total"]
-                else:
+            for district in c2c_franchinsee[state]:
+                c2c_franchinsee_report[state][district] = c2c_franchinsee_report.get(state).get(district) or {}
+                if district != "Total" and district != "C2Cs on New Platform":
+                    print("District    "+ district)
+                    for hub in c2c_franchinsee[state][district]:
+                        if hub != "Total":
+                            print("Hub     " + hub)
+                            c2c_franchinsee_report[state][district][hub] = c2c_franchinsee_report.get(state).get(district).get(hub) or {}
+                            c2c_franchinsee_report[state][district][hub]["C2C"] = 0
+                            c2c_franchinsee_report[state][district][hub]["Franchisee"] = 0
+                            c2c_franchinsee_report[state][district][hub]["Total"] = 0
+                            c2c_franchinsee_report[state][district][hub]["C2C"] = c2c_franchinsee_report[state][district][hub]["C2C"] + c2c_franchinsee[state][district][hub]["C2C"]
+                            c2c_franchinsee_report[state][district][hub]["Franchisee"] = c2c_franchinsee_report[state][district][hub]["Franchisee"] + c2c_franchinsee[state][district][hub]["Franchisee"]
+                            c2c_franchinsee_report[state][district][hub]["Total"] = c2c_franchinsee_report[state][district][hub]["Total"] + c2c_franchinsee[state][district][hub]["Total"]
+                        elif hub == "Total":
+                            c2c_franchinsee_report[state][district]["Total"] = c2c_franchinsee_report.get(state).get(district).get("Total") or {}
+                            c2c_franchinsee_report[state][district]["Total"]["C2C"] = c2c_franchinsee.get(state).get(district).get("Total").get("C2C")
+                            c2c_franchinsee_report[state][district]["Total"]["Franchisee"] = c2c_franchinsee.get(state).get(district).get("Total").get("Franchisee")
+                            c2c_franchinsee_report[state][district]["Total"]["Total"] = c2c_franchinsee.get(state).get(district).get("Total").get("Total")
+                elif district == "Total":
                     c2c_franchinsee_report[state]["Total"] = c2c_franchinsee_report.get(state).get("Total") or {}
                     c2c_franchinsee_report[state]["Total"]["C2C"] = c2c_franchinsee.get(state).get("Total").get("C2C")
                     c2c_franchinsee_report[state]["Total"]["Franchisee"] = c2c_franchinsee.get(state).get("Total").get("Franchisee")
                     c2c_franchinsee_report[state]["Total"]["Total"] = c2c_franchinsee.get(state).get("Total").get("Total")
+                elif district == "C2Cs on New Platform":
+                    c2c_franchinsee_report[state]["C2Cs on New Platform"] = c2c_franchinsee_report.get(state).get("C2Cs on New Platform") or {}
+                    c2c_franchinsee_report[state]["C2Cs on New Platform"]["C2C"] = c2c_franchinsee.get(state).get("C2Cs on New Platform").get("C2C")
+                    c2c_franchinsee_report[state]["C2Cs on New Platform"]["Franchisee"] = c2c_franchinsee.get(state).get("C2Cs on New Platform").get("Franchisee")
+                    c2c_franchinsee_report[state]["C2Cs on New Platform"]["Total"] = c2c_franchinsee.get(state).get("C2Cs on New Platform").get("Total")
+
         else:
             c2c_franchinsee_report["Total"] = c2c_franchinsee_report.get("Total") or {}
             c2c_franchinsee_report["Total"]["C2C"] = c2c_franchinsee.get("Total").get("C2C")

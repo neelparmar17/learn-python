@@ -153,12 +153,14 @@ def transform_orders(orders_old_pf, fname):
 
     for i in range(1, yesterday_date+1):
         print(i)
-        dates.append((date.today() - timedelta(i)).strftime("%d/%m/%Y"))
+        dates.append((date.today() - timedelta(i)).strftime("%d-%m-%Y"))
 
-    print(dates)
+    # print(dates)
+    # print(sheet)
     for row in sheet:
-        if (yesterday.strftime("%m/%Y") in row[order_date_index] and row[order_date_index] in dates) and (row[status_index] == "Payment Completed" or row[status_index] == "Order Completed" or row[status_index] == "Partially Paid" or row[status_index] == "Work Completed"
+        if (yesterday.strftime("%m-%Y") in row[order_date_index] and row[order_date_index] in dates) and (row[status_index] == "Payment Completed" or row[status_index] == "Order Completed" or row[status_index] == "Partially Paid" or row[status_index] == "Work Completed"
          or row[status_index] == "Closed" or row[status_index] == "Feedback" or row[status_index] == "Work Started") and (row[time_index] != "" and (int(row[time_index]) > 9 and int(row[time_index])< 1200)) and (row[sku_index] != "" and row[sku_index][-1] == "0"):
+            print(row)
             
             if row[hub_index] == "Dahegam" and row[state_index] == "india":
                 state = row[first_row.index("Suplier District")].title()
@@ -170,6 +172,9 @@ def transform_orders(orders_old_pf, fname):
             orders_count += 1
             hours_count += round(round(float(row[time_index]/60), 2), 2)
             
+            print(row[time_index]/60)
+
+
             orders[state]["Total"] = orders.get(state).get("Total") or {}
             orders[state]["Total"]["Hours"] = orders.get(state).get("Total").get("Hours") or 0
             orders[state]["Total"]["Orders"] = orders.get(state).get("Total").get("Orders") or 0

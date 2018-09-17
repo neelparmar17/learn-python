@@ -205,8 +205,11 @@ def generate_daily_report_html(aggregate_c2c_franchisee, email_html, yesterday, 
            "mtd_total": round(orders.get("Total").get("Hours"), 0),
           }
     for state in aggregate_c2c_franchisee:
-        rowspan = format(len(aggregate_c2c_franchisee[state].keys()))
+        rowspan = len(aggregate_c2c_franchisee[state].keys())
         if state != "Total":
+            for district in aggregate_c2c_franchisee[state]:
+                if district != "Total" and district !="C2Cs on New Platform":
+                    rowspan += (len(aggregate_c2c_franchisee[state][district].keys()) -1)
             report_html += """
             <tr>
                 <td rowspan = %(rowspan)s>
@@ -230,27 +233,50 @@ def generate_daily_report_html(aggregate_c2c_franchisee, email_html, yesterday, 
                     "mtd_franchisee": round(orders.get(state).get("Total").get("Franchisee") or 0, 0),
                     "mtd_total": round(orders.get(state).get("Total").get("Hours") or 0, 0),
                    }
+            for district in aggregate_c2c_franchisee[state]:
+                if district != "Total" and district != "C2Cs on New Platform":
+                    report_html += """
+                        <tr bgcolor = "%(color)s">
+                            <td>%(district)s</td>
+                            <td>%(yesterday_c2c)s</td>
+                            <td>%(yesterday_franchisee)s</td>
+                            <td>%(yesterday_total)s</td>
+                            <td>%(mtd_c2c)s</td>
+                            <td>%(mtd_franchisee)s</td>
+                            <td>%(mtd_total)s</td>
+                        </tr>
+                    """ % {
+                        "color": "#f0ffa3",
+                        "district": district,
+                        "yesterday_c2c": round(aggregate_c2c_franchisee.get(state).get(district).get("Total").get("C2C"), 0),
+                        "yesterday_franchisee": round(aggregate_c2c_franchisee.get(state).get(district).get("Total").get("Franchisee"), 0),
+                        "yesterday_total": round(aggregate_c2c_franchisee.get(state).get(district).get("Total").get("Total"), 0),
+                        "mtd_c2c": round(orders.get(state).get(district).get("Total").get("C2C"), 0),
+                        "mtd_franchisee": round(orders.get(state).get(district).get("Total").get("Franchisee"), 0),
+                        "mtd_total": round(orders.get(state).get(district).get("Total").get("Hours"), 0),
+                    }
 
-            for hub in aggregate_c2c_franchisee[state]:
-                if hub != "Total" and hub != "C2Cs on New Platform":
-                    report_html+="""
-                    <tr>
-                        <td>%(hub)s</td>
-                        <td>%(yesterday_c2c)s</td>
-                        <td>%(yesterday_franchisee)s</td>
-                        <td>%(yesterday_total)s</td>
-                        <td>%(mtd_c2c)s</td>
-                        <td>%(mtd_franchisee)s</td>
-                        <td>%(mtd_total)s</td>
-                    </tr>
-                    """ % { "hub": hub,
-                            "yesterday_c2c": round(aggregate_c2c_franchisee[state][hub]["C2C"], 0),
-                            "yesterday_franchisee": round(aggregate_c2c_franchisee[state][hub]["Franchisee"],0),
-                            "yesterday_total": round(aggregate_c2c_franchisee[state][hub]["Total"], 0),
-                            "mtd_c2c": round(orders.get(state).get(hub).get("C2C"), 0),
-                            "mtd_franchisee": round(orders[state][hub]["Franchisee"], 0),
-                            "mtd_total": round(orders[state][hub]["C2C"] + orders[state][hub]["Franchisee"], 0),
-                        }
+                    for hub in aggregate_c2c_franchisee[state][district]:
+                        if hub != "Total":
+                            print(hub)
+                            report_html+="""
+                            <tr>
+                                <td>%(hub)s</td>
+                                <td>%(yesterday_c2c)s</td>
+                                <td>%(yesterday_franchisee)s</td>
+                                <td>%(yesterday_total)s</td>
+                                <td>%(mtd_c2c)s</td>
+                                <td>%(mtd_franchisee)s</td>
+                                <td>%(mtd_total)s</td>
+                            </tr>
+                            """ % { "hub": hub,
+                                    "yesterday_c2c": round(aggregate_c2c_franchisee[state][district][hub]["C2C"], 0),
+                                    "yesterday_franchisee": round(aggregate_c2c_franchisee[state][district][hub]["Franchisee"],0),
+                                    "yesterday_total": round(aggregate_c2c_franchisee[state][district][hub]["Total"], 0),
+                                    "mtd_c2c": round(orders.get(state).get(district).get(hub).get("C2C"), 0),
+                                    "mtd_franchisee": round(orders[state][district][hub]["Franchisee"], 0),
+                                    "mtd_total": round(orders[state][district][hub]["C2C"] + orders[state][district][hub]["Franchisee"], 0),
+                                }
             report_html+= """
                 <tr bgcolor = "%(color)s">
                     <td>%(c2cs_new)s</td>
@@ -262,14 +288,14 @@ def generate_daily_report_html(aggregate_c2c_franchisee, email_html, yesterday, 
                     <td>%(mtd_total)s</td>
                 </tr>
             """  % { "c2cs_new": "C2Cs on New Platform",
-                     "color" : "#9bc4ff",
-                     "yesterday_c2c": round(aggregate_c2c_franchisee[state]["C2Cs on New Platform"]["C2C"], 0),
-                     "yesterday_franchisee": round(aggregate_c2c_franchisee[state]["C2Cs on New Platform"]["Franchisee"],0),
-                     "yesterday_total": round(aggregate_c2c_franchisee[state]["C2Cs on New Platform"]["Total"], 0),
-                     "mtd_c2c": round(orders.get(state).get("C2Cs on New Platform").get("C2C"), 0),
-                     "mtd_franchisee": round(orders[state]["C2Cs on New Platform"]["Franchisee"], 0),
-                     "mtd_total": round(orders[state]["C2Cs on New Platform"]["C2C"] + orders[state]["C2Cs on New Platform"]["Franchisee"], 0),
-                   }
+                    "color" : "#9bc4ff",
+                    "yesterday_c2c": round(aggregate_c2c_franchisee[state]["C2Cs on New Platform"]["C2C"], 0),
+                    "yesterday_franchisee": round(aggregate_c2c_franchisee[state]["C2Cs on New Platform"]["Franchisee"],0),
+                    "yesterday_total": round(aggregate_c2c_franchisee[state]["C2Cs on New Platform"]["Total"], 0),
+                    "mtd_c2c": round(orders.get(state).get("C2Cs on New Platform").get("C2C"), 0),
+                    "mtd_franchisee": round(orders[state]["C2Cs on New Platform"]["Franchisee"], 0),
+                    "mtd_total": round(orders[state]["C2Cs on New Platform"]["C2C"] + orders[state]["C2Cs on New Platform"]["Franchisee"], 0),
+                }
 
     report_html+="""
     </table>

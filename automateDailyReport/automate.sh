@@ -1,6 +1,6 @@
 #!/bin/bash
 
-oday=$(date "+%d/%m/%Y")
+today=$(date "+%d/%m/%Y")
 yesterday=$(date -d "yesterday" "+%d/%m/%Y")
 starting=$(date "+01/%m/%Y")
 day_before_yesterday=$(date -d "-2 day" "+%d/%m/%Y")
